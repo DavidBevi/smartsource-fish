@@ -1,9 +1,34 @@
 # `smart-source` for fish shell
 Use this function instead of `source` to detect _valid_ shebangs, and be asked if you want to follow them or stay in fish.
+<br/>
 
-**HOW TO INSTALL**: download `smart-source.fish` and put it inside `~/.config/fish/functions/`.
+## Install
+Download `smart-source.fish` and put it inside `~/.config/fish/functions/`.
+<br/>
 
-## `source` v `bash` v `smart-source`
-* interoperable syntax <img width="999" height="564" alt="image" src="https://github.com/user-attachments/assets/5777caae-3a19-4d40-b70e-1b6c7a4eac17" />
-* incompatible with fish <img width="1003" height="695" alt="image" src="https://github.com/user-attachments/assets/666f4879-e546-4a63-9f70-a7ad5b5137c0" />
-* bad shebang <img width="1006" height="612" alt="image" src="https://github.com/user-attachments/assets/33c76223-5869-4111-8d67-e7261475d6c3" />
+## Examples
+```bash
+#!/usr/bin/env bash
+[ -n "$FISH_VERSION" ] && echo "SCRIPT RUN BY FISH $FISH_VERSION"
+[ -n "$BASH_VERSION" ] && echo "SCRIPT RUN BY BASH $BASH_VERSION"
+# with `source file` ✅ -- with `bash file` ✅
+```
+* with `smart-source file` &nbsp; ❱ &nbsp; "Use bash? (y/n)" &nbsp; ❱ &nbsp; runs both ways
+
+-----
+
+```bash
+#!/usr/bin/env bash
+echo "SCRIPT RUN BY $(ps -p $$ -o comm=)"
+# with `source file` ❌ -- with `bash file` ✅
+```
+* with `smart-source file` &nbsp; ❱ &nbsp; "Use bash? (y/n)"&nbsp; ❱ &nbsp; `n` crashes -- `y` works
+
+-----
+
+```bash
+#!/usr/bin/env BAD-SHEBANG
+# with `source file` depends on the script
+# with  `bash file`  depends on the script
+```
+* with `smart-source file` &nbsp; ❱ &nbsp; "Invalid shebang, using fish" &nbsp; ❱ &nbsp; performs `source file`
