@@ -27,9 +27,9 @@ function smart-source
 
             # y -> fwd to bin
             if string match -iq 'y' -- $answer
-                echo -en "ℹ️ Launching '$bin $argv'… "
+                echo -e "\e[7m ▶ $bin \e[0m"
                 eval $bin $argv
-                echo "finished"
+                echo -e "\e[7m ◼ $bin \e[0m"
 
             # n -> use fish
             else
